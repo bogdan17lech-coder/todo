@@ -7,9 +7,13 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
+/**
+ * Global API error handler (JSON responses).
+ */
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
+    // Bean validation (@Valid) errors -> 400 with field messages
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, Object> handleValidation(MethodArgumentNotValidException ex) {
@@ -19,12 +23,14 @@ public class ApiExceptionHandler {
         return Map.of("error", "validation_failed", "details", details);
     }
 
+    // Propagated ResponseStatusException -> keep original status + reason
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Map<String, Object>> handleRse(ResponseStatusException ex) {
         Map<String, Object> body = Map.of("error", ex.getReason());
         return ResponseEntity.status(ex.getStatusCode()).body(body);
     }
 
+    // Malformed/missing JSON body -> 400 with a short code
     @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
     @ResponseStatus(org.springframework.http.HttpStatus.BAD_REQUEST)
     public java.util.Map<String, Object> handleEmptyOrMalformedBody(
