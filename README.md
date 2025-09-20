@@ -1,25 +1,76 @@
-# ToDo REST (Spring Boot)
+# ToDo Project
 
-**Stack:** Spring Boot 3, Web, Validation, JPA, H2  
-**Port:** 8082
+Simple REST API for managing tasks. Supports MySQL and H2 (in-memory) databases via Spring profiles.
 
-## Run
-mvn spring-boot:run
+Requirements
 
-## Endpoints
-- POST  /api/tasks
-- GET   /api/tasks?completed=&q=&page=&size=
-- GET   /api/tasks/{id}
-- PATCH /api/tasks/{id}
-- PATCH /api/tasks/{id}/complete
-- PATCH /api/tasks/{id}/uncomplete
-- DELETE /api/tasks/{id}
+Java 24
 
-## Errors
-- 400 invalid_or_missing_body
-- 400 validation_failed
-- 404 Task not found
+Maven
 
-## Notes
--Pagination: page, size (sorted by createdAt descending).
--H2 console: /h2-console (JDBC URL: jdbc:h2:mem:todo, user sa).
+MySQL (if profile = mysql)
+
+How to run
+Profiles
+
+mysql – uses local MySQL
+
+h2 – uses in-memory DB
+
+Set active profile:
+
+-Dspring.profiles.active=mysql
+
+
+or
+
+-Dspring.profiles.active=h2
+
+Run with Maven
+# MySQL
+mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dspring.profiles.active=mysql"
+
+# H2
+mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dspring.profiles.active=h2"
+
+
+App will start on: http://localhost:8080
+
+Endpoints
+Method	URL	Description
+GET	/api/tasks	Get all tasks
+GET	/api/tasks/{id}	Get task by id
+POST	/api/tasks	Create task
+PUT	/api/tasks/{id}	Update task
+PATCH	/api/tasks/{id}	Mark completed
+DELETE	/api/tasks/{id}	Delete task
+Example JSON
+{
+  "title": "Study English",
+  "description": "30 minutes of practice",
+  "completed": false
+}
+
+Profiles config
+
+application-mysql.yml
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/todo?createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: root
+    password: kuwe123
+
+
+application-h2.yml
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:todo;DB_CLOSE_DELAY=-1;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
