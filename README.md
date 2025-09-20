@@ -1,4 +1,4 @@
-ToDo Project
+#ToDo Project
 
 Simple REST API for managing tasks. Supports MySQL and H2 (in-memory) databases via Spring profiles.
 
