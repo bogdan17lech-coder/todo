@@ -1,17 +1,4 @@
-server:
-  port: 8082            # App runs on http://localhost:8082
-
+# Default profile switch (run profile)  ← junior: this file only picks which profile to load
 spring:
-  datasource:
-    # In-memory H2 DB (reset on app restart). MODE=MySQL → SQL dialect closer to MySQL.
-    url: jdbc:h2:mem:todo;DB_CLOSE_DELAY=-1;MODE=MySQL
-    driver-class-name: org.h2.Driver
-    username: sa        # Default H2 user
-    password:           # No password for local dev
-  jpa:
-    hibernate:
-      ddl-auto: update  # Auto-create/update tables in dev (DON'T use in real prod)
-    show-sql: true      # Log SQL in console for debugging
-  h2:
-    console:
-      enabled: true     # Web console at /h2-console (dev only)
+  profiles:
+    active: mysql    # options: mysql | h2
