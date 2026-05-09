@@ -4,35 +4,35 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import java.time.Instant;
 
-// Simple JPA entity for "tasks" table
+
 @Entity
 @Table(name = "tasks")
 public class Task {
 
-    // ID (auto-increment)
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Required short title
+
     @NotBlank(message = "title must not be blank")
     private String title;
 
-    // Done flag (defaults to false)
+
     private boolean completed = false;
 
-    // Timestamps
+
     private Instant createdAt = Instant.now();
     private Instant updatedAt = Instant.now();
 
-    // JPA needs no-args ctor
+
     public Task() {}
 
-    // Update "updatedAt" on each update
+
     @PreUpdate
     void preUpdate() { this.updatedAt = Instant.now(); }
 
-    // Getters/Setters (no extra logic)
+
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 

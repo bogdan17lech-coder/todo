@@ -1,4 +1,4 @@
-# Default profile switch (run profile)  ← junior: this file only picks which profile to load
+
 spring:
   profiles:
-    active: mysql    # options: mysql | h2
+    active: mysql
